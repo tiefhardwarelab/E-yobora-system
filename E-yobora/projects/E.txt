@@ -1,0 +1,58 @@
+#include <ESP8266WiFi.h>
+#include <ThingESP.h>
+
+ThingESP8266 thing("tiefhardwarelab", "Eyobora", "tief.e-yobora");
+
+int LED = D2;
+
+unsigned long previousMillis = 0;
+const long INTERVAL = 6000;  
+
+void setup()
+{
+  Serial.begin(115200);
+
+  pinMode(LED, OUTPUT);
+
+  thing.SetWiFi("t115187@ltr.liquidtelecom.com", "m6XTyr4uv2");
+
+  thing.initDevice();
+
+}
+
+
+String HandleResponse(String query)
+{
+
+  if (query == "1") {
+    digitalWrite(LED, HIGH);
+    return "Yego: Itara Ryatse.";
+  }
+
+  else if (query == "0") {
+    digitalWrite(LED, LOW);
+    return "Yego: Itara Ryazimye.";
+  }
+
+  else if (query == "E-yobora")
+    return digitalRead(LED) ? "Itara Ryatse: 1 " : "Itara Ryatse: 0";
+
+  else return "Ubusabe bwanyu Ntibuzwi!..";
+
+}
+
+
+void loop()
+{
+  /* if (millis() - previousMillis >= INTERVAL) {
+    previousMillis = millis() ;
+    String msg = digitalRead(LED) ? "LED is OFF" : "LED is ON";
+    
+    thing.sendMsg("phone_num", msg);
+ 
+  }*/
+
+  
+  thing.Handle();
+
+}
